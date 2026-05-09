@@ -1,0 +1,837 @@
+Build a complete static React.js web admin panel called
+"WorkSetu Admin Panel" — for a location-based service booking
+and workforce dispatch platform. This is the SUPER ADMIN
+side only. Single admin role with full access to everything.
+
+==============================================
+TECH & GENERAL RULES
+==============================================
+
+- Framework: React.js
+- UI Library: Ant Design (antd)
+- All data is hardcoded — NO backend, NO API calls
+- Use React Router for all navigation
+- Every screen must be a separate component file
+- Use React useState and useEffect hooks for local state
+- Charts: use Recharts library
+- Icons: Ant Design icons only
+- Fully responsive web layout
+
+==============================================
+COLOR THEME
+==============================================
+
+Primary Blue: #1A73E8
+Accent Orange: #FF6B00
+Background: #F0F2F5
+Sidebar Background: #001529
+Sidebar Active: #1A73E8
+Card White: #FFFFFF
+Success Green: #34A853
+Error Red: #EA4335
+Warning Orange: #FBBC04
+Text Dark: #1A1A2E
+Text Grey: #6B7280
+Border: #E5E7EB
+
+Typography:
+- Font: Inter or system default
+- Page Title: 20px SemiBold
+- Section Heading: 16px Medium
+- Body: 14px Regular
+- Caption: 12px Regular
+
+==============================================
+LAYOUT STRUCTURE
+==============================================
+
+Overall layout:
+- Fixed left sidebar (220px wide, dark #001529)
+- Top header bar (white, 64px height)
+- Main content area (scrollable, grey background)
+
+Sidebar contains:
+- WorkSetu logo at top with tagline
+- Navigation menu items with icons
+- Active item highlighted in Primary Blue
+- Bottom: Admin profile section with name and logout
+
+Top Header contains:
+- Page title (changes per screen)
+- Right side: notification bell icon with badge,
+  admin avatar, "Super Admin" label
+
+==============================================
+SIDEBAR NAVIGATION MENU
+==============================================
+
+Menu Items (in order):
+1. 📊 Dashboard
+2. 🛠 Service Management
+3. 👥 User Management
+4. 👷 Worker Management
+5. 🪪 KYC & Verification
+6. 📋 Booking Management
+7. 🔁 Manual Assignment
+8. ⚠️ Dispute & Support
+9. 💰 Finance & Payouts
+10. 📈 Reports & Analytics
+11. ⚙️ Platform Settings
+12. 🔐 Admin Login (entry point, no sidebar)
+
+==============================================
+ADMIN LOGIN — SCREEN 1
+==============================================
+
+File: pages/AdminLogin.jsx
+- Full page centered layout (no sidebar)
+- WorkSetu logo at top
+- Card centered on screen (white, shadow, 400px wide)
+- Title: "Admin Panel Login"
+- Subtitle: "WorkSetu Super Admin"
+- Email input field
+- Password input field (with show/hide toggle)
+- "Login" button (Primary Blue, full width)
+- Hardcode credentials:
+  Email: admin@worksetu.com
+  Password: admin123
+- On correct: navigate to Dashboard
+- On wrong: show Ant Design error message
+  "Invalid credentials. Please try again."
+- No forgot password link
+
+==============================================
+DASHBOARD — SCREEN 2
+==============================================
+
+File: pages/Dashboard.jsx
+
+Top Stats Row (4 cards):
+1. Total Bookings Today: 47
+   subtitle: +12% from yesterday, blue icon
+2. Active Workers Online: 23
+   subtitle: Out of 58 total, green icon
+3. Revenue Today: ₹18,450
+   subtitle: Commission earned, orange icon
+4. Open Disputes: 3
+   subtitle: Needs attention, red icon
+
+Second Row — Charts (2 columns):
+Left: Line chart (Recharts)
+  Title: "Bookings This Week"
+  Data (Mon-Sun): 32, 45, 38, 52, 41, 47, 29
+  Color: Primary Blue line
+
+Right: Pie chart (Recharts)
+  Title: "Services Breakdown"
+  Data:
+  Home Cleaning: 35%
+  Car Wash: 20%
+  AC Repair: 18%
+  Plumbing: 15%
+  Others: 12%
+
+Third Row — Tables (2 columns):
+Left: "Recent Bookings" table
+  Columns: Booking ID, Customer, Service, Worker, Status, Amount
+  5 rows hardcoded:
+  #BK1042 | Rahul Sharma | Home Cleaning | Suresh Kumar | Completed | ₹548
+  #BK1041 | Priya Verma | Car Wash | Amit Singh | In Progress | ₹249
+  #BK1040 | Meena Gupta | AC Repair | Ravi Kumar | Completed | ₹699
+  #BK1039 | Raj Patel | Plumbing | — | Searching | ₹349
+  #BK1038 | Sunita Devi | Electrician | Suresh Kumar | Disputed | ₹299
+  Status column: color coded Ant Design tags
+
+Right: "Worker Online Status" table
+  Columns: Worker Name, Service, Location, Status, Tasks Today
+  5 rows:
+  Suresh Kumar | Cleaning | Model Town | Online (green) | 3
+  Amit Singh | Car Wash | Civil Lines | Online (green) | 2
+  Ravi Kumar | AC Repair | Sarabha Nagar | Busy (orange) | 1
+  Deepak Sharma | Plumbing | BRS Nagar | Offline (grey) | 0
+  Preet Singh | Electrician | Dugri | Online (green) | 1
+
+Bottom Alert Banner:
+Orange info box:
+"⚠️ 3 KYC verifications pending review"
+"⚠️ 2 disputes awaiting response (SLA breach risk)"
+Clickable links to respective pages
+
+==============================================
+SERVICE MANAGEMENT — SCREEN 3
+==============================================
+
+File: pages/ServiceManagement.jsx
+
+Top bar:
+- Title: "Service Management"
+- "Add New Service" button (Primary Blue, right side)
+
+Services Table:
+Columns: #, Service Name, Icon, Base Price, 
+         Status, Total Bookings, Actions
+
+6 rows hardcoded:
+1 | Home Cleaning | 🧹 | ₹299 | Active | 234 | Edit/Toggle/Delete
+2 | Car Wash | 🚗 | ₹199 | Active | 189 | Edit/Toggle/Delete
+3 | Plumbing | 🔧 | ₹349 | Active | 145 | Edit/Toggle/Delete
+4 | AC Repair | ❄️ | ₹499 | Active | 98 | Edit/Toggle/Delete
+5 | Sofa Cleaning | 🛋️ | ₹399 | Inactive | 67 | Edit/Toggle/Delete
+6 | Electrician | ⚡ | ₹249 | Active | 112 | Edit/Toggle/Delete
+
+Actions:
+- Edit: opens Ant Design Modal with form:
+  Service Name input
+  Base Price input
+  Description textarea
+  Status toggle
+  Save button (Primary Blue)
+
+- Toggle: switches Active/Inactive with confirmation modal
+  "Are you sure you want to deactivate this service?"
+
+- Delete: red delete button with confirmation modal
+  "This action cannot be undone."
+
+Add New Service Modal:
+  Service Name input (required)
+  Base Price input (required)
+  Description textarea
+  Service Icon selector (6 emoji options)
+  Status toggle (Active by default)
+  "Create Service" button
+
+==============================================
+USER MANAGEMENT — SCREEN 4
+==============================================
+
+File: pages/UserManagement.jsx
+
+Top bar:
+- Search input: "Search by name or phone"
+- Filter dropdown: All | Active | Banned
+- Total count: "Total Users: 1,247"
+
+Users Table:
+Columns: #, Name, Phone, City, Total Bookings,
+         Joined Date, Status, Actions
+
+8 rows hardcoded:
+1 | Rahul Sharma | +91 98765 43210 | Ludhiana | 5 | 12 Jan 2025 | Active | View/Ban
+2 | Priya Verma | +91 87654 32109 | Ludhiana | 3 | 18 Feb 2025 | Active | View/Ban
+3 | Meena Gupta | +91 76543 21098 | Ludhiana | 8 | 5 Jan 2025 | Active | View/Ban
+4 | Raj Patel | +91 65432 10987 | Ludhiana | 1 | 1 Mar 2025 | Active | View/Ban
+5 | Sunita Devi | +91 54321 09876 | Ludhiana | 2 | 20 Feb 2025 | Banned | View/Unban
+6 | Amit Verma | +91 43210 98765 | Ludhiana | 6 | 8 Jan 2025 | Active | View/Ban
+7 | Kavita Singh | +91 32109 87654 | Ludhiana | 4 | 25 Feb 2025 | Active | View/Ban
+8 | Deepak Nath | +91 21098 76543 | Ludhiana | 0 | 10 Mar 2025 | Active | View/Ban
+
+View User → opens right side drawer:
+  User full profile:
+  Name, phone, city, joined date
+  Booking history list (3 items)
+  Total spent: ₹1,244
+  Active disputes: 0
+  Status badge
+
+Ban button → confirmation modal:
+  "Ban this user? They will lose all app access."
+  Confirm (red) | Cancel
+
+==============================================
+WORKER MANAGEMENT — SCREEN 5
+==============================================
+
+File: pages/WorkerManagement.jsx
+
+Top bar:
+- Search input: "Search by name or phone"
+- Filter dropdown: All | Online | Offline | Banned | KYC Pending
+- Total count: "Total Workers: 58"
+
+Workers Table:
+Columns: #, Name, Phone, Service, City,
+         KYC Status, Online Status, Tasks Done,
+         Rating, Actions
+
+8 rows hardcoded:
+1 | Suresh Kumar | +91 87654 32109 | Cleaning | Ludhiana | Verified | Online | 42 | ⭐4.9 | View/Ban
+2 | Amit Singh | +91 76543 21098 | Car Wash | Ludhiana | Verified | Online | 38 | ⭐4.7 | View/Ban
+3 | Ravi Kumar | +91 65432 10987 | AC Repair | Ludhiana | Verified | Busy | 29 | ⭐4.8 | View/Ban
+4 | Deepak Sharma | +91 54321 09876 | Plumbing | Ludhiana | Verified | Offline | 15 | ⭐4.5 | View/Ban
+5 | Preet Singh | +91 43210 98765 | Electrician | Ludhiana | Verified | Online | 21 | ⭐4.6 | View/Ban
+6 | Gurpreet Kaur | +91 32109 87654 | Cleaning | Ludhiana | Pending | Offline | 0 | — | View/Ban
+7 | Manpreet Singh | +91 21098 76543 | Car Wash | Ludhiana | Rejected | Offline | 0 | — | View/Ban
+8 | Harjit Singh | +91 10987 65432 | Plumbing | Ludhiana | Verified | Offline | 7 | ⭐4.3 | View/Ban
+
+KYC Status tags: color coded
+  Verified: green
+  Pending: orange
+  Rejected: red
+
+View Worker → right side drawer:
+  Full worker profile
+  Name, phone, service, city, joined date
+  KYC status with document names
+  Task history (3 recent)
+  Total earned: ₹12,400
+  Commission paid: ₹2,480
+  Rating: 4.9 with review count
+  Wallet balance: ₹2,100 available, ₹304 on hold
+  Ban/Unban button inside drawer
+
+Ban Worker → confirmation modal with reason input
+
+==============================================
+KYC & VERIFICATION — SCREEN 6
+==============================================
+
+File: pages/KYCVerification.jsx
+
+Top bar:
+- Filter tabs: All | Pending | Approved | Rejected
+- Pending count badge on Pending tab: 3
+
+KYC Cards list (not table, use cards):
+Each card contains:
+  Worker name and phone
+  Submitted date
+  3 document status items:
+    📄 Aadhaar Card — [View] button
+    📄 PAN Card — [View] button
+    🤳 Selfie — [View] button
+  Action buttons: [Approve All] (green) [Reject] (red)
+
+Hardcode 5 KYC entries:
+
+Card 1 — Gurpreet Kaur | +91 32109 87654 | Submitted: 6 May 2025
+  Aadhaar: Uploaded | PAN: Uploaded | Selfie: Uploaded
+  Status: Pending
+  [Approve All] [Reject]
+
+Card 2 — Manpreet Singh | +91 21098 76543 | Submitted: 5 May 2025
+  Aadhaar: Uploaded | PAN: Uploaded | Selfie: Uploaded
+  Status: Pending
+  [Approve All] [Reject]
+
+Card 3 — Balveer Kaur | +91 09876 54321 | Submitted: 4 May 2025
+  Aadhaar: Uploaded | PAN: Uploaded | Selfie: Uploaded
+  Status: Pending
+  [Approve All] [Reject]
+
+Card 4 — Suresh Kumar | Submitted: 10 Jan 2025
+  All documents: Verified ✓
+  Status: Approved (green)
+
+Card 5 — Harjeet Brar | Submitted: 2 Mar 2025
+  Status: Rejected (red)
+  Rejection reason: "Aadhaar photo unclear. Resubmit required."
+
+View Document → opens Ant Design Modal:
+  Shows a placeholder grey rectangle (document preview)
+  "Document Preview" label inside
+  Close button
+
+Approve All → confirmation modal:
+  "Approve all KYC documents for this worker?
+   They will be able to start accepting tasks."
+  Confirm (green) | Cancel
+
+Reject → modal with reason input (required):
+  Dropdown reason: Document unclear, Fake document,
+  Mismatch in details, Incomplete submission, Other
+  Text area for additional note
+  Confirm Reject (red) | Cancel
+
+==============================================
+BOOKING MANAGEMENT — SCREEN 7
+==============================================
+
+File: pages/BookingManagement.jsx
+
+Top bar:
+- Search: "Search by booking ID or customer name"
+- Filter by status: All | Searching | Accepted |
+  In Progress | Completed | Cancelled | Disputed
+- Filter by service: All services dropdown
+- Date range picker (UI only, non-functional filter)
+- Total: "Total Bookings: 1,847"
+
+Bookings Table:
+Columns: Booking ID, Customer, Service, Worker,
+         Location, Amount, Status, Date, Actions
+
+10 rows hardcoded:
+#BK1042 | Rahul Sharma | Home Cleaning | Suresh Kumar | Model Town | ₹548 | Completed | Today | View
+#BK1041 | Priya Verma | Car Wash | Amit Singh | Civil Lines | ₹249 | In Progress | Today | View
+#BK1040 | Meena Gupta | AC Repair | Ravi Kumar | Sarabha Nagar | ₹699 | Completed | Today | View
+#BK1039 | Raj Patel | Plumbing | Searching... | BRS Nagar | ₹349 | Searching | Today | View/Assign
+#BK1038 | Sunita Devi | Electrician | Suresh Kumar | Dugri | ₹299 | Disputed | Yesterday | View
+#BK1037 | Amit Verma | Home Cleaning | Deepak Sharma | Model Town | ₹499 | Completed | Yesterday | View
+#BK1036 | Kavita Singh | Sofa Cleaning | — | Civil Lines | ₹399 | Cancelled | Yesterday | View
+#BK1035 | Deepak Nath | Car Wash | Amit Singh | Sarabha Nagar | ₹199 | Completed | 5 May | View
+#BK1034 | Gurpreet Kaur | Plumbing | Ravi Kumar | BRS Nagar | ₹349 | Completed | 5 May | View
+#BK1033 | Harjit Singh | AC Repair | Preet Singh | Dugri | ₹599 | Cancelled | 4 May | View
+
+Status tags: color coded Ant Design tags
+  Searching: blue
+  Accepted: cyan
+  In Progress: orange
+  Completed: green
+  Cancelled: grey
+  Disputed: red
+
+View Booking → opens full page detail or large modal:
+  Booking ID and date
+  Customer info: name, phone
+  Worker info: name, phone, rating
+  Service: name, price breakdown
+  Location: full address
+  Timeline:
+    Booking Created: time
+    Worker Assigned: time
+    Work Started: time
+    Completed: time
+  Payment summary:
+    Amount paid: ₹548
+    Platform commission: ₹49
+    Worker payout: ₹499
+  Status badge
+  Admin action buttons at bottom:
+    "Override Status" dropdown
+    "Reassign Worker" button (navigates to Manual Assignment)
+    "Cancel Booking" button (red, with confirmation)
+
+==============================================
+MANUAL ASSIGNMENT — SCREEN 8
+==============================================
+
+File: pages/ManualAssignment.jsx
+
+Page split into two sections:
+
+Left Section — "Unassigned / Failed Bookings"
+List of bookings needing manual assignment:
+3 cards:
+
+Card 1:
+  Booking: #BK1039
+  Customer: Raj Patel
+  Service: Plumbing
+  Location: BRS Nagar, Ludhiana
+  Requested: 45 min ago
+  Status: No workers found (red badge)
+  "Assign Worker" button (Primary Blue)
+
+Card 2:
+  Booking: #BK1031
+  Customer: Harjeet Brar
+  Service: AC Repair
+  Location: Sarabha Nagar, Ludhiana
+  Requested: 2 hr ago
+  Status: Worker cancelled (orange badge)
+  "Reassign Worker" button
+
+Card 3:
+  Booking: #BK1028
+  Customer: Manpreet Kaur
+  Service: Home Cleaning
+  Location: Model Town, Ludhiana
+  Requested: 3 hr ago
+  Status: No workers found (red badge)
+  "Assign Worker" button
+
+Right Section — "Available Workers"
+Shows list of available online workers for selected booking:
+
+Filter: Dropdown to select service type
+Search: by worker name
+
+Worker cards (4):
+Card 1:
+  Suresh Kumar | ⭐ 4.9 | Home Cleaning
+  📍 2.1 km from booking location
+  Status: Online (green)
+  Tasks today: 3
+  [Assign] button (Primary Blue)
+
+Card 2:
+  Gurpreet Kaur | ⭐ 4.7 | Home Cleaning
+  📍 3.4 km from booking location
+  Status: Online (green)
+  Tasks today: 1
+  [Assign] button
+
+Card 3:
+  Deepak Sharma | ⭐ 4.5 | Home Cleaning
+  📍 5.2 km from booking location
+  Status: Online (green)
+  Tasks today: 0
+  [Assign] button
+
+Card 4:
+  Harjit Singh | ⭐ 4.3 | Home Cleaning
+  📍 7.8 km from booking location
+  Status: Online (green)
+  Tasks today: 2
+  [Assign] button
+
+On Assign click → confirmation modal:
+  "Assign Suresh Kumar to Booking #BK1039?"
+  "Customer: Raj Patel | Service: Plumbing"
+  Confirm (green) | Cancel
+  On confirm: show success notification
+  "Worker successfully assigned to booking"
+
+==============================================
+DISPUTE & SUPPORT — SCREEN 9
+==============================================
+
+File: pages/DisputeSupport.jsx
+
+Top bar:
+- Filter tabs: All | Open | Under Review | Resolved | Closed
+- Open count badge: 3
+- SLA warning banner (red):
+  "⚠️ 2 disputes have exceeded 24-hour SLA"
+
+Disputes Table:
+Columns: Dispute ID, Booking ID, Customer,
+         Worker, Issue Type, Raised On,
+         SLA Status, Status, Actions
+
+6 rows hardcoded:
+#DS006 | #BK1038 | Sunita Devi | Suresh Kumar | Poor quality | Today 9am | Breach (red) | Open | View
+#DS005 | #BK1033 | Harjit Singh | Preet Singh | Worker no-show | Today 8am | At Risk (orange) | Open | View
+#DS004 | #BK1029 | Kavita Singh | Amit Singh | Overcharged | Yesterday | Within SLA | Under Review | View
+#DS003 | #BK1025 | Raj Patel | Ravi Kumar | Rude behavior | 4 May | Resolved | Resolved | View
+#DS002 | #BK1018 | Meena Gupta | Deepak Sharma | Poor quality | 3 May | Resolved | Resolved | View
+#DS001 | #BK1010 | Rahul Sharma | Suresh Kumar | Payment issue | 1 May | Resolved | Closed | View
+
+View Dispute → opens full detail modal:
+
+Dispute header:
+  Dispute ID, booking ID, raised date
+  SLA badge
+
+Customer info section:
+  Name, phone, issue type
+  Customer's description:
+  "The worker did not clean properly.
+   Left the place messy. Demanding refund."
+
+Evidence section:
+  "Customer Submitted Evidence"
+  3 placeholder grey image boxes in a row
+  (non-functional image placeholders)
+
+Worker response section:
+  "Worker's Response"
+  "I completed the work as per the service scope.
+   Customer was not satisfied with standard results."
+  Worker name and rating below
+
+Admin Action Panel:
+  Status update dropdown:
+    Open | Under Review | Resolved | Closed
+  Resolution Type dropdown:
+    Full Refund | Partial Refund | No Refund |
+    Warning to Worker | Ban Worker | Dismiss Dispute
+  Refund Amount input (shows if refund selected):
+    ₹ input field
+  Admin Note textarea:
+    "Internal note for record keeping"
+  Two buttons:
+    "Save Resolution" (Primary Blue)
+    "Escalate" (orange outlined)
+
+On Save: show success notification
+  "Dispute resolved successfully"
+
+==============================================
+FINANCE & PAYOUTS — SCREEN 10
+==============================================
+
+File: pages/FinancePayouts.jsx
+
+Top stats row (4 cards):
+1. Total Revenue: ₹2,84,500
+   subtitle: All time platform earnings
+2. Commission This Month: ₹18,450
+   subtitle: 20% of bookings
+3. Pending Payouts: ₹12,340
+   subtitle: 8 workers awaiting
+4. Total Refunded: ₹4,200
+   subtitle: This month
+
+Tabs: Payouts | Transactions | Refunds
+
+--- Payouts Tab ---
+Table:
+Columns: Worker Name, Service, Tasks Done,
+         Gross Earned, Commission, Net Payout,
+         Wallet Status, Action
+
+6 rows:
+Suresh Kumar | Cleaning | 42 | ₹8,400 | ₹1,680 | ₹6,720 | Available | Pay Now
+Amit Singh | Car Wash | 38 | ₹7,200 | ₹1,440 | ₹5,760 | Available | Pay Now
+Ravi Kumar | AC Repair | 29 | ₹9,800 | ₹1,960 | ₹7,840 | On Hold 🔒 | Locked
+Deepak Sharma | Plumbing | 15 | ₹4,500 | ₹900 | ₹3,600 | Available | Pay Now
+Preet Singh | Electrician | 21 | ₹5,250 | ₹1,050 | ₹4,200 | Available | Pay Now
+Gurpreet Kaur | Cleaning | 0 | ₹0 | ₹0 | ₹0 | — | —
+
+Pay Now → confirmation modal:
+  "Release payout of ₹6,720 to Suresh Kumar?"
+  "This will transfer to their registered bank account."
+  Confirm (green) | Cancel
+  On confirm: success notification + row status changes to "Paid"
+
+"Pay All Available" button top right:
+  Confirms bulk payout for all Available workers
+
+--- Transactions Tab ---
+Table:
+Columns: Transaction ID, Booking ID, Customer,
+         Worker, Amount, Commission, Type, Date
+
+8 rows hardcoded (mix of UPI and Cash):
+#TXN1042 | #BK1042 | Rahul Sharma | Suresh Kumar | ₹548 | ₹49 | UPI | Today
+#TXN1041 | #BK1041 | Priya Verma | Amit Singh | ₹249 | ₹25 | Cash | Today
+#TXN1040 | #BK1040 | Meena Gupta | Ravi Kumar | ₹699 | ₹70 | UPI | Today
+#TXN1037 | #BK1037 | Amit Verma | Deepak Sharma | ₹499 | ₹50 | UPI | Yesterday
+#TXN1035 | #BK1035 | Deepak Nath | Amit Singh | ₹199 | ₹20 | Cash | 5 May
+#TXN1034 | #BK1034 | Gurpreet Kaur | Ravi Kumar | ₹349 | ₹35 | UPI | 5 May
+#TXN1033 | #BK1033 | Harjit Singh | Preet Singh | ₹599 | ₹60 | UPI | 4 May
+#TXN1030 | #BK1030 | Kavita Singh | Suresh Kumar | ₹299 | ₹30 | Cash | 3 May
+
+--- Refunds Tab ---
+Table:
+Columns: Refund ID, Booking ID, Customer,
+         Amount, Reason, Status, Date, Action
+
+4 rows:
+#RF004 | #BK1038 | Sunita Devi | ₹299 | Poor quality | Pending | Today | Approve/Reject
+#RF003 | #BK1036 | Kavita Singh | ₹399 | Worker cancelled | Approved | Yesterday | View
+#RF002 | #BK1029 | Kavita Singh | ₹150 | Partial - overcharge | Approved | 4 May | View
+#RF001 | #BK1018 | Meena Gupta | ₹499 | Worker no-show | Approved | 3 May | View
+
+Approve Refund → modal:
+  Shows booking and amount
+  "Approve full refund of ₹299 to Sunita Devi?"
+  Confirm (green) | Reject (red) | Partial (enter amount)
+
+==============================================
+REPORTS & ANALYTICS — SCREEN 11
+==============================================
+
+File: pages/ReportsAnalytics.jsx
+
+Top bar:
+- Date range picker (UI, non-functional)
+- "Export CSV" button (right side, outlined Primary Blue)
+  On click: show success notification "Report exported successfully"
+
+Section 1 — Booking Analytics
+4 metric cards:
+  Total Bookings: 1,847
+  Completed: 1,623 (87.9%)
+  Cancelled: 148 (8%)
+  Disputed: 76 (4.1%)
+
+Bar chart (Recharts):
+  Title: "Monthly Bookings"
+  X-axis: Jan Feb Mar Apr May
+  Data: 210, 285, 320, 398, 412
+  Bar color: Primary Blue
+
+Section 2 — Revenue Analytics
+4 metric cards:
+  Total Revenue: ₹2,84,500
+  Platform Commission: ₹56,900 (20%)
+  Worker Payouts: ₹2,27,600
+  Refunds Issued: ₹4,200
+
+Line chart (Recharts):
+  Title: "Revenue This Week"
+  Data (Mon-Sun): 3200, 4100, 3800, 5200, 4800, 6100, 4900
+  Color: Success Green line
+
+Section 3 — Worker Performance
+Table:
+Columns: Worker, Tasks, Rating, Earnings,
+         Completion Rate, Disputes
+
+5 rows:
+Suresh Kumar | 42 | ⭐4.9 | ₹6,720 | 97% | 0
+Ravi Kumar | 29 | ⭐4.8 | ₹7,840 | 95% | 1
+Amit Singh | 38 | ⭐4.7 | ₹5,760 | 94% | 0
+Preet Singh | 21 | ⭐4.6 | ₹4,200 | 91% | 1
+Deepak Sharma | 15 | ⭐4.5 | ₹3,600 | 88% | 2
+
+Section 4 — Service Popularity
+Table:
+Columns: Service, Total Bookings, Revenue, Avg Price
+
+6 rows:
+Home Cleaning | 645 | ₹96,755 | ₹299-499
+Car Wash | 389 | ₹38,900 | ₹199-299
+AC Repair | 234 | ₹1,17,000 | ₹499-699
+Plumbing | 287 | ₹71,750 | ₹299-499
+Sofa Cleaning | 156 | ₹62,400 | ₹399-499
+Electrician | 136 | ₹27,200 | ₹199-299
+
+==============================================
+PLATFORM SETTINGS — SCREEN 12
+==============================================
+
+File: pages/PlatformSettings.jsx
+
+Organized in sections with save buttons per section:
+
+Section 1 — Dispatch Settings
+  Title: "Worker Dispatch Configuration"
+  Form fields:
+  Initial Search Radius: [5] km (number input)
+  Expanded Search Radius: [10] km (number input)
+  Task Request Timeout: [60] seconds (number input)
+  Max Rejection Before Penalty: [3] times (number input)
+  "Save Dispatch Settings" button (Primary Blue)
+
+Section 2 — Commission Settings
+  Title: "Commission & Pricing"
+  Platform Commission Rate: [20] % (number input)
+  Minimum Service Price: ₹ [99] (number input)
+  Wallet Hold Duration: [24] hours (number input)
+  "Save Commission Settings" button
+
+Section 3 — City & Coverage
+  Title: "Active Cities"
+  Table showing:
+  City | State | Status | Workers | Actions
+  Ludhiana | Punjab | Active | 58 | Edit/Deactivate
+  
+  "Add New City" button opens modal:
+  City name input
+  State input
+  Launch date picker
+  Save button
+
+Section 4 — Notification Templates
+  Title: "SMS & Push Notification Templates"
+  Tabs: Push | SMS | Email
+
+  Push tab — 4 editable template cards:
+  1. Booking Confirmed:
+     "Your booking for {service} is confirmed! 
+      Worker assigned: {worker_name}"
+     Edit textarea | Save button
+
+  2. Worker Assigned:
+     "Worker {worker_name} is on the way! 
+      ETA: {eta} minutes"
+     Edit textarea | Save button
+
+  3. Payment Received:
+     "Payment of ₹{amount} received for {service}. 
+      Thank you!"
+     Edit textarea | Save button
+
+  4. Dispute Resolved:
+     "Your dispute #{dispute_id} has been resolved. 
+      Check app for details."
+     Edit textarea | Save button
+
+Section 5 — App Controls
+  Title: "App Feature Toggles"
+  List of toggles (Ant Design Switch):
+  Allow Cash Payments: ON
+  Allow UPI Payments: ON
+  Show AI Chatbot: ON
+  Worker Rating System: ON
+  Customer Rating System: ON
+  Auto-expand Radius: ON
+  Maintenance Mode: OFF (red when ON)
+  "Save App Settings" button
+
+Section 6 — Admin Account
+  Title: "Admin Account Settings"
+  Current email: admin@worksetu.com
+  Change Password section:
+  Current password input
+  New password input
+  Confirm password input
+  "Update Password" button
+  On save: success notification
+
+==============================================
+NAVIGATION STRUCTURE
+==============================================
+
+/login → AdminLogin.jsx (no sidebar)
+
+All other routes have full sidebar layout:
+/dashboard → Dashboard.jsx
+/services → ServiceManagement.jsx
+/users → UserManagement.jsx
+/workers → WorkerManagement.jsx
+/kyc → KYCVerification.jsx
+/bookings → BookingManagement.jsx
+/assignment → ManualAssignment.jsx
+/disputes → DisputeSupport.jsx
+/finance → FinancePayouts.jsx
+/reports → ReportsAnalytics.jsx
+/settings → PlatformSettings.jsx
+
+Default redirect: / → /login
+After login: /login → /dashboard
+Logout: any page → /login
+Active menu item highlighted in sidebar
+
+==============================================
+GLOBAL BEHAVIORS
+==============================================
+
+- All tables: show 10 rows, Ant Design Table component
+- All tables: have search and filter working on hardcoded data
+- All modals: centered, proper spacing, close on cancel
+- All confirmations: use Ant Design Modal.confirm
+- All success actions: Ant Design notification top-right
+- All error states: Ant Design message.error
+- Sidebar stays fixed on all pages
+- Header page title updates per page
+- Logout button in sidebar bottom:
+  Shows confirmation modal
+  On confirm: clears session, go to /login
+
+==============================================
+FILE STRUCTURE
+==============================================
+
+src/
+  App.jsx (router setup)
+  main.jsx
+  theme/
+    colors.js
+  components/
+    Sidebar.jsx
+    Header.jsx
+    Layout.jsx
+  pages/
+    AdminLogin.jsx
+    Dashboard.jsx
+    ServiceManagement.jsx
+    UserManagement.jsx
+    WorkerManagement.jsx
+    KYCVerification.jsx
+    BookingManagement.jsx
+    ManualAssignment.jsx
+    DisputeSupport.jsx
+    FinancePayouts.jsx
+    ReportsAnalytics.jsx
+    PlatformSettings.jsx
+
+Generate the complete working React.js admin panel with
+all 12 screens fully connected. Every page must be
+navigable via sidebar. All tables, modals, charts,
+forms must work with hardcoded data. No errors.
+No missing imports. All files complete.
